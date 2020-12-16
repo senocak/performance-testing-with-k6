@@ -1,0 +1,29 @@
+config:
+  target: 'https://Kessel-cpaas-oauth.genband.com'
+  phases:
+    - duration: 60
+      arrivalCount: 217
+  variables:
+    clientCorrelators:
+      - "clientCorrelator1"
+      - "clientCorrelator2"
+      - "clientCorrelator3"
+      - "clientCorrelator4"
+      - "clientCorrelator5"
+scenarios:
+  - flow:
+    - post:
+        url: '/rest/version/1/user/u1002@spidr.com/push/apple/devices'
+        auth:
+            user: 'u1002@spidr.com'
+            pass: '1234'
+        json:
+            bundleID: 'com.genband.smartoffice.alpha.omni.mobile'
+            voipDeviceToken: 'voipDeviceToken'
+            standardDeviceToken: 'standardDeviceToken'
+            clientCorrelator: '{{clientCorrelators}}'
+            service:
+                - IM
+                - call
+            realm: 'default'
+            isProduction: true

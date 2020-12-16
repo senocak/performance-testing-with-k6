@@ -1,0 +1,32 @@
+config:
+  target: 'https://Kessel-cpaas-oauth.genband.com'
+  phases:
+    - duration: 60
+      arrivalCount: 50
+  variables:
+    user:
+      - "u1004@spidr.com"
+scenarios:
+  - flow:
+    - post:
+        url: '/rest/version/1/user/{{user}}/push/apple/devices'
+        auth:
+          user: '{{user}}'
+          pass: '1234'
+        json:
+          bundleID: 'com.genband.smartoffice.alpha.omni.mobile'
+          voipDeviceToken: 'voipDeviceToken'
+          standardDeviceToken: 'standardDeviceToken'
+          clientCorrelator: 'clientCorrelator'
+          service:
+              - call
+          realm: 'default'
+          isProduction: true
+        capture:
+          json: "$.appleDeviceRegistrationResponse.registration"
+          as: "registration"
+    - delete:
+        url: "{{registration}}"
+        auth:
+          user: '{{user}}'
+          pass: '1234'
