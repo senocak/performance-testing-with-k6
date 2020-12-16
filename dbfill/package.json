@@ -1,0 +1,22 @@
+{
+  "name": "@senocak/dbfill",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Fill.js",
+  "preferGlobal": true,
+  "bin": {
+    "dbfill": "./Fill.js"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "commander": "^5.1.0",
+    "qs": "^6.9.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
