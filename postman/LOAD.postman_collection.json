@@ -1,0 +1,156 @@
+{
+	"info": {
+		"_postman_id": "809d9e1a-673f-4c4f-a806-ab5bd7cb4211",
+		"name": "LOAD",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "bundleID is valid Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "53b73435-f7a0-4a18-a11c-8c68ad0cf536",
+						"exec": [
+							"var responseData = pm.response.json();",
+							"pm.test(\"Status code is 200 or 201\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201,200]);",
+							"});",
+							"pm.test(\"Verify Status Code of RespnseData\", function () {",
+							"    var responseData = pm.response.json();",
+							"    var statusCode = responseData.appleDeviceRegistrationResponse.statusCode;",
+							"    pm.expect(statusCode).to.be.oneOf([0, 2]);",
+							"});",
+							"pm.test(\"deviceId validation\", function () {",
+							"    console.log(\"deviceId validation\");",
+							"    var deviceIdURL = (responseData.appleDeviceRegistrationResponse.registration).split(\"/\");",
+							"    var deviceId = deviceIdURL[deviceIdURL.length - 1];",
+							"    if(deviceId !== null && deviceId !== undefined){",
+							"        pm.globals.set(\"testChannel\", deviceId);",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "1234",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{testUser1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"bundleID\": \"{{appleBundleId}}\",\r\n    \"voipDeviceToken\": \"{{voipDeviceToken}}\",\r\n    \"standardDeviceToken\" : \"{{standardDeviceToken}}\",\r\n    \"clientCorrelator\": \"{{clientCorrelator}}\",\r\n    \"service\": [\r\n\t   \"IM\",\"call\"\r\n    ],\r\n    \"realm\": \"{{realm}}\",\r\n    \"isProduction\": {{isProduction}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{restgwAddr}}/rest/version/1/user/{{testUser1}}/push/apple/devices",
+					"host": [
+						"{{restgwAddr}}"
+					],
+					"path": [
+						"rest",
+						"version",
+						"1",
+						"user",
+						"{{testUser1}}",
+						"push",
+						"apple",
+						"devices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User sends (Apple) Push subscription deletion Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a5a4c9d0-8830-452c-a53e-7a4ac35907a1",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200]);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "{{testUser1}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "1234",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic NDAwMkBzcGlkci5kZXYuZ2VuYmFuZC5jb206YWJjZDEyMzQ="
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{restgwAddr}}/rest/version/1/user/{{testUser1}}/push/apple/devices/{{testChannel}}",
+					"host": [
+						"{{restgwAddr}}"
+					],
+					"path": [
+						"rest",
+						"version",
+						"1",
+						"user",
+						"{{testUser1}}",
+						"push",
+						"apple",
+						"devices",
+						"{{testChannel}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
